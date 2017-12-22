@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Sound Fun</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+                <!-- where the stuff goes down -->
+        <script>
+            var context = new (window.AudioContext || window.webkitAudioContext)();
+            var notecounter = 0;
+            var bank2counter = 0;
+            var cancelbool = false;
+            function playSound(fre, dur) {
+                var oscar = context.createOscillator();
+                oscar.type = 'square';
+                oscar.frequency.value = fre;
+                oscar.connect(context.destination);
+                oscar.start();
+                setTimeout(function(){
+                    oscar.stop();
+                }, dur);
+            }
+            function retrieveFre(targetString) {
+                console.log(targetString);
+                var frequency = parseInt($(targetString).children().first().text());
+                return frequency;
+            }
+            function retrieveDur(targetString) {
+                var duration = parseInt($(targetString).children().last().text());
+                return duration;
+            }
+            $(document).ready(function(){
+                console.log("Document is ready");
+                $('form').submit(function(e){
+                    e.preventDefault();    
+                    var duration = $("input[name='duration']").val();
+                    var frequency = $("input[name='frequency']").val();
+                    $('#soundbank').append(buildSoundThing(frequency, duration));
+                });
+
+                function buildSoundThing(fre, dur) {
+                    var localnote = notecounter;
+                    notecounter++;
+                    return "<div class='sound-thing' id=sound-thing" + localnote +"><p>" + fre +"</p><p>" + dur + "</p></div>";
+                };
+
+
+                $(".soundbank").on("click", ".sound-thing", function(){
+                    var frequency = parseInt($(this).children().first().text());
+                    console.log(frequency);
+                    var duration = parseInt($(this).children().last().text());
+                    console.log(duration);
+                    playSound(frequency, duration);
+                });
+
+                var loopcount = 0;
+
+                function myLoop(targetStringBase) {
+                    var targetString = targetStringBase + loopcount;
+                    console.log('targetString: ' + targetString);
+                    var frequency = retrieveFre(targetString);
+                    var duration = retrieveDur(targetString);
+                    console.log('Frequency: ' + frequency + ' Duration: ' + duration);
+                    playSound(frequency, duration);
+                    setTimeout(function() {
+                        loopcount++;
+                        if (loopcount < notecounter) {
+                            myLoop(targetStringBase);
+                        } else {
+                            loopcount=0;
+                            if (targetStringBase == '#sound-thingA') {
+                                if (!cancelbool) {                                  
+                                    myLoop(targetStringBase);
+                                } else {
+                                    cancelbool = false;
+                                }
+                            }
+                        }
+                    }, duration)
+                }
+
+                $('#playall').click(function() {
+                    console.log('Pressed Play All')
+                    myLoop("#sound-thing");
+                });
+
+                $('#createBank').click(function() {
+                    $('#soundbank2').html($('#soundbank').html());
+                    for (var i=0; i<notecounter; i++) {
+                        var oldid = '#sound-thing' + i;
+                        var newid = 'sound-thingA' + i;
+                        console.log('oldid: ' + oldid + ' newid: ' + newid);
+                        $('#soundbank2').children(oldid).attr('id',newid);
+                        bank2counter++;
+                    }
+                })
+                $('#playall2').click(function() {
+                    myLoop("#sound-thingA");
+                })
+
+                $('#cancelbutton').click(function() {
+                    cancelbool = true;
+                })
+
+            });
+        </script>
+    </head>
+    <body>
+        <form action="">
+            <label for="frequency">Freq:</label>
+            <input type="number" name="frequency" value="500">
+            <label for="duration">Duration:</label>
+            <input type="number" name="duration" value="250">
+            <input type="submit" value="add note!">
+        </form>
+        <div id="soundbank" class="soundbank">
+
+        </div>
+        <button id="playall">Play All</button>
+        <div id="soundbank2" class="soundbank"></div>
+        <button id="createBank">Create Bank</button>
+        <button id="playall2">Play All</button>
+        <button id="cancelbutton">Stop Play All</button>
+    </body>
+</html>

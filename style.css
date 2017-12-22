@@ -1,0 +1,28 @@
+* {
+	margin:0;
+	padding:0;
+}
+form {
+	width:1000px;
+	height:50px;
+	background-color:pink;
+	line-height: 50px;
+}
+button {
+	display:inline-block;
+	vertical-align: top;
+}
+#soundbank {
+	width:150px;
+	background-color:lightblue;
+	display:inline-block;
+}
+.sound-thing {
+	padding-bottom:5px;
+}
+#soundbank2 {
+	width:150px;
+	background-color:lightgreen;
+	display: inline-block;
+	vertical-align: top;
+}
