@@ -26,3 +26,10 @@ button {
 	display: inline-block;
 	vertical-align: top;
 }
+#buttondiv {
+	display: inline-block;
+	width:85px;
+	padding:5px 0;
+	background-color: #bb78bb;
+	vertical-align: top;
+}

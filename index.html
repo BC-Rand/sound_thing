@@ -23,15 +23,7 @@
                     oscar.stop();
                 }, dur);
             }
-            function retrieveFre(targetString) {
-                console.log(targetString);
-                var frequency = parseInt($(targetString).children().first().text());
-                return frequency;
-            }
-            function retrieveDur(targetString) {
-                var duration = parseInt($(targetString).children().last().text());
-                return duration;
-            }
+
             $(document).ready(function(){
                 console.log("Document is ready");
                 $('form').submit(function(e){
@@ -61,8 +53,8 @@
                 function myLoop(targetStringBase) {
                     var targetString = targetStringBase + loopcount;
                     console.log('targetString: ' + targetString);
-                    var frequency = retrieveFre(targetString);
-                    var duration = retrieveDur(targetString);
+                    var frequency = parseInt($(targetString).children().first().text());
+                    var duration = parseInt($(targetString).children().last().text());
                     console.log('Frequency: ' + frequency + ' Duration: ' + duration);
                     playSound(frequency, duration);
                     setTimeout(function() {
@@ -105,11 +97,18 @@
                     cancelbool = true;
                 })
 
+                $('#export').click(function() {
+
+                })
+                $('#import').click(function() {
+
+                })
+
             });
         </script>
     </head>
     <body>
-        <form action="">
+        <form action="" id="noteform">
             <label for="frequency">Freq:</label>
             <input type="number" name="frequency" value="500">
             <label for="duration">Duration:</label>
@@ -119,10 +118,16 @@
         <div id="soundbank" class="soundbank">
 
         </div>
-        <button id="playall">Play All</button>
+        <div id="buttondiv">
+            <button id="playall">Play All</button>
+            <button id="export">Export</button>
+            <button id="import">Import</button>
+        </div>
         <div id="soundbank2" class="soundbank"></div>
-        <button id="createBank">Create Bank</button>
-        <button id="playall2">Play All</button>
-        <button id="cancelbutton">Stop Play All</button>
+        <div id="buttondiv">
+            <button id="createBank">Create Bank</button>
+            <button id="playall2">Play All</button>
+            <button id="cancelbutton">Stop Play All</button>
+        </div>
     </body>
 </html>
