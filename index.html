@@ -10,7 +10,7 @@
                 <!-- where the stuff goes down -->
         <script>
             var context = new (window.AudioContext || window.webkitAudioContext)();
-            var notecounter = 0;
+            var bank1counter = 0;
             var bank2counter = 0;
             var cancelbool = false;
             function playSound(fre, dur) {
@@ -34,8 +34,8 @@
                 });
 
                 function buildSoundThing(fre, dur) {
-                    var localnote = notecounter;
-                    notecounter++;
+                    var localnote = bank1counter;
+                    bank1counter++;
                     return "<div class='sound-thing' id=sound-thing" + localnote +"><p>" + fre +"</p><p>" + dur + "</p></div>";
                 };
 
@@ -50,7 +50,7 @@
 
                 var loopcount = 0;
 
-                function myLoop(targetStringBase) {
+                function myLoop(targetStringBase, notecounter) {
                     var targetString = targetStringBase + loopcount;
                     console.log('targetString: ' + targetString);
                     var frequency = parseInt($(targetString).children().first().text());
@@ -59,13 +59,14 @@
                     playSound(frequency, duration);
                     setTimeout(function() {
                         loopcount++;
+                        console.log('loopcount: ' + loopcount + ' notecounter: ' + notecounter);
                         if (loopcount < notecounter) {
-                            myLoop(targetStringBase);
+                            myLoop(targetStringBase, notecounter);
                         } else {
                             loopcount=0;
                             if (targetStringBase == '#sound-thingA') {
                                 if (!cancelbool) {                                  
-                                    myLoop(targetStringBase);
+                                    myLoop(targetStringBase, notecounter);
                                 } else {
                                     cancelbool = false;
                                 }
@@ -76,12 +77,12 @@
 
                 $('#playall').click(function() {
                     console.log('Pressed Play All')
-                    myLoop("#sound-thing");
+                    myLoop("#sound-thing", bank1counter);
                 });
 
                 $('#createBank').click(function() {
                     $('#soundbank2').html($('#soundbank').html());
-                    for (var i=0; i<notecounter; i++) {
+                    for (var i=0; i<bank1counter; i++) {
                         var oldid = '#sound-thing' + i;
                         var newid = 'sound-thingA' + i;
                         console.log('oldid: ' + oldid + ' newid: ' + newid);
@@ -90,7 +91,7 @@
                     }
                 })
                 $('#playall2').click(function() {
-                    myLoop("#sound-thingA");
+                    myLoop("#sound-thingA", bank2counter);
                 })
 
                 $('#cancelbutton').click(function() {
