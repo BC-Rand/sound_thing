@@ -2,8 +2,11 @@
 	margin:0;
 	padding:0;
 }
-form {
-	width:1000px;
+#wrapper {
+	width: 950px;
+}
+#noteform {
+	width:950px;
 	height:50px;
 	background-color:pink;
 	line-height: 50px;
@@ -16,6 +19,7 @@ button {
 	width:150px;
 	background-color:lightblue;
 	display:inline-block;
+	vertical-align: top;
 }
 .sound-thing {
 	padding-bottom:5px;
@@ -31,5 +35,16 @@ button {
 	width:85px;
 	padding:5px 0;
 	background-color: #bb78bb;
+	vertical-align: top;
+}
+#exportdiv {
+	display: inline-block;
+	width: 150px;
+	border:1px solid black; 
+	vertical-align: top;
+
+}
+#importform {
+	display: inline-block;
 	vertical-align: top;
 }

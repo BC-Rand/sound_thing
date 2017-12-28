@@ -26,12 +26,32 @@
 
             $(document).ready(function(){
                 console.log("Document is ready");
-                $('form').submit(function(e){
+                $('#noteform').submit(function(e){
                     e.preventDefault();    
                     var duration = $("input[name='duration']").val();
                     var frequency = $("input[name='frequency']").val();
                     $('#soundbank').append(buildSoundThing(frequency, duration));
                 });
+                //The export/import string is broken up into 3 parts. The first is the html data from the first soundbank. The second is the number of notes in that bank. The third is the length of the integer of the number of notes. This method will break when the notes go into the billions because the length of the third part will be 2 digits, and I have it set up to grab the very last value of the string.
+                $('#importform').submit(function(e) {
+                    e.preventDefault();
+                    var importtext = $("input[name='import']").val();
+                    console.log(importtext.slice(importtext.length - 1, importtext.length));
+
+                    var bankcounterlength = importtext.slice(importtext.length - 1, importtext.length);
+                    console.log("bankcounterlength: " + bankcounterlength);
+                    //This forceint can likely be removed by putting parseInt() around the bankcounterlength assignment value and adding 1 to it, then replacing forceInt with bankcounterlength.
+                    var forceint = 1;
+                    forceint += parseInt(bankcounterlength);
+                    bank1counter = importtext.substring(importtext.length - (forceint), importtext.length - 1);
+                    console.log ("1 + bankcounterlength: " + (forceint));
+                    console.log('bank1counter: ' + bank1counter);
+
+                    importtext = importtext.substr(0, importtext.length - (forceint));
+                    console.log('importtext: ' + importtext);
+
+                    $('#soundbank').html($(importtext));
+                })
 
                 function buildSoundThing(fre, dur) {
                     var localnote = bank1counter;
@@ -99,36 +119,41 @@
                 })
 
                 $('#export').click(function() {
-
+                    $('#exportp').text($('#soundbank').html() + bank1counter + bank1counter.toString().length);
                 })
-                $('#import').click(function() {
 
-                })
 
             });
         </script>
     </head>
     <body>
-        <form action="" id="noteform">
-            <label for="frequency">Freq:</label>
-            <input type="number" name="frequency" value="500">
-            <label for="duration">Duration:</label>
-            <input type="number" name="duration" value="250">
-            <input type="submit" value="add note!">
-        </form>
-        <div id="soundbank" class="soundbank">
+        <div id="wrapper">
+            <form action="" id="noteform">
+                <label for="frequency">Freq:</label>
+                <input type="number" name="frequency" value="500">
+                <label for="duration">Duration:</label>
+                <input type="number" name="duration" value="250">
+                <input type="submit" value="add note!">
+            </form>
+            <div id="soundbank" class="soundbank">
 
-        </div>
-        <div id="buttondiv">
-            <button id="playall">Play All</button>
-            <button id="export">Export</button>
-            <button id="import">Import</button>
-        </div>
-        <div id="soundbank2" class="soundbank"></div>
-        <div id="buttondiv">
-            <button id="createBank">Create Bank</button>
-            <button id="playall2">Play All</button>
-            <button id="cancelbutton">Stop Play All</button>
+            </div>
+            <div id="buttondiv">
+                <button id="playall">Play All</button>
+                <button id="export">Export</button>
+            </div>
+            <div id="soundbank2" class="soundbank"></div>
+            <div id="buttondiv">
+                <button id="createBank">Create Bank</button>
+                <button id="playall2">Play All</button>
+                <button id="cancelbutton">Stop Play All</button>
+            </div>
+            <form action="" id="importform">
+                <label for="import">Import: </label>
+                <input type="text" name="import">
+                <input type="submit" value="Import">
+            </form>
+            <div id="exportdiv"><p id="exportp"></p></div>
         </div>
     </body>
 </html>
