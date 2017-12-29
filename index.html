@@ -68,9 +68,9 @@
                     playSound(frequency, duration);
                 });
 
-                var loopcount = 0;
+                
 
-                function myLoop(targetStringBase, notecounter) {
+                function myLoop(targetStringBase, notecounter, loopcount) {
                     var targetString = targetStringBase + loopcount;
                     console.log('targetString: ' + targetString);
                     var frequency = parseInt($(targetString).children().first().text());
@@ -81,12 +81,12 @@
                         loopcount++;
                         console.log('loopcount: ' + loopcount + ' notecounter: ' + notecounter);
                         if (loopcount < notecounter) {
-                            myLoop(targetStringBase, notecounter);
+                            myLoop(targetStringBase, notecounter, loopcount);
                         } else {
                             loopcount=0;
                             if (targetStringBase == '#sound-thingA') {
                                 if (!cancelbool) {                                  
-                                    myLoop(targetStringBase, notecounter);
+                                    myLoop(targetStringBase, notecounter, loopcount);
                                 } else {
                                     cancelbool = false;
                                 }
@@ -97,7 +97,7 @@
 
                 $('#playall').click(function() {
                     console.log('Pressed Play All')
-                    myLoop("#sound-thing", bank1counter);
+                    myLoop("#sound-thing", bank1counter, 0);
                 });
 
                 $('#createBank').click(function() {
@@ -111,7 +111,7 @@
                     }
                 })
                 $('#playall2').click(function() {
-                    myLoop("#sound-thingA", bank2counter);
+                    myLoop("#sound-thingA", bank2counter, 0);
                 })
 
                 $('#cancelbutton').click(function() {
