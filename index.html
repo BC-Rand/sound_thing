@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,7 +15,7 @@
             function playSound(fre, dur) {
                 var oscar = context.createOscillator();
                 oscar.type = 'square';
-                oscar.frequency.value = fre;
+                oscar.frequency.value = fre; 
                 oscar.connect(context.destination);
                 oscar.start();
                 setTimeout(function(){
@@ -25,7 +24,7 @@
             }
 
             $(document).ready(function(){
-                console.log("Document is ready");
+                console.log("Document is ready"); 
                 $('#noteform').submit(function(e){
                     e.preventDefault();    
                     var duration = $("input[name='duration']").val();
@@ -83,7 +82,6 @@
                         if (loopcount < notecounter) {
                             myLoop(targetStringBase, notecounter, loopcount);
                         } else {
-                            loopcount=0;
                             if (targetStringBase == '#sound-thingA') {
                                 if (!cancelbool) {                                  
                                     myLoop(targetStringBase, notecounter, loopcount);
